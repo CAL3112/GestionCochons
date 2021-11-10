@@ -139,7 +139,14 @@ h1{
 
 .filtre{
     display: flex;
-    width: 500px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gen-cochon{
+    width: 80%;
+    margin-top: 20px;
+    display: flex;
     justify-content: space-evenly;
-    align-items: flex-end;
 }

@@ -60,6 +60,28 @@ if(isset($_POST['gen_cochon'])){
 
 }
 
+if(isset($_POST['reprod_cochon'])){
+    $nb_bebe = rand(4 , 8);
+
+    for ($i=0; $i < $nb_bebe ; $i++) {
+    
+  $Obj_cochon = new cochon("new");
+  $sexe = rand(0,1);
+  if($sexe == 0){$valSexe = "Male";$nomCochon = $tblNomMasculin[rand(0,9)];} else {$valSexe = "Femelle";$nomCochon = $tblNomFeminin[rand(0,9)];};
+  $Obj_cochon->Set('sexe', $valSexe);
+  $Obj_cochon->Set('nom', $nomCochon);
+  $Obj_cochon->Set('poids', rand(30 , 160));
+  $Obj_cochon->Set('taille', rand(50 , 40));
+  $Obj_cochon->Set('duree_de_vie', rand(6000 , 604800));
+  $Obj_cochon->Set('id_pere', $_POST['pere']);
+  $Obj_cochon->Set('id_mere', $_POST['mere']);
+}
+
+  echo "<p class='note note-success'>Vous avez donné naissance à ".$nb_bebe." cochonnet(s)";
+    
+
+}
+
 
 ?>
 <h1>Liste des cochons</h1>
@@ -87,6 +109,36 @@ if(isset($_POST['gen_cochon'])){
             </select>
             <input class="btn btn-success bouton" type="submit" value="Appliquer le filtre">
         </form>
+        <div class="nbcochon">
+
+<?php
+
+$Obj_cochon = new cochon("empty");
+$nb_cochon = ($Obj_cochon->CompteCochonH());
+
+$Obj_cochon = new cochon("empty");
+$nb_cochonne = ($Obj_cochon->CompteCochonF());
+
+$Obj_cochon = new cochon("empty");
+$nb_cochon_total = ($Obj_cochon->CompteCochon());
+
+$Obj_cochon = new cochon("empty");
+$cochon = ($Obj_cochon->SelectAllM());
+
+$Obj_cochon = new cochon("empty");
+$cochonne = ($Obj_cochon->SelectAllF());
+
+?>
+<?php echo "<br>Il y a ".$nb_cochon[0][0]." cochon(s) en vie. <br>"; ?>
+<?php echo "Il y a ".$nb_cochonne[0][0]." cochonne(s) en vie.<br>"; ?>
+<?php echo "Ce qui nous fait un total de ".$nb_cochon_total[0][0]." cochon(s) en vie.<br>"; ?>
+
+
+</div>
+
+</div>
+<div class="gen-cochon">
+
 
 
         <form action="" method="POST"> <!--  Génération de cochons aléatoires -->
@@ -96,34 +148,27 @@ if(isset($_POST['gen_cochon'])){
 
         </form>
 
-    </div>
+        <form action="" method="POST"> <!--  Reproduction de cochons aléatoires -->
+            Reproduction de cochon : <br>
+            Père :
+            <select name="pere">
+                <option value="0">Non renseigné</option>
+               <?php foreach ($cochon as $male){
+                echo  "<option value='".$male['id_cochon']."'"; echo ">".$male['nom']."</option>"; } ?>
+            </select>
+            Mère :
+            <select name="mere">
+                <option value="0">Non renseigné</option>
+               <?php foreach ($cochonne as $femelle){
+                echo  "<option value='".$femelle['id_cochon']."'"; echo ">".$femelle['nom']."</option>"; } ?>
+            </select>
 
-    <div class="nbcochon">
+            <input class="btn btn-success bouton" name="reprod_cochon" type="submit" value="Reproduire">
 
-    <?php
-
-    $Obj_cochon = new cochon("empty");
-    $nb_cochon = ($Obj_cochon->CompteCochonH());
-
-    $Obj_cochon = new cochon("empty");
-    $nb_cochonne = ($Obj_cochon->CompteCochonF());
-
-    $Obj_cochon = new cochon("empty");
-    $nb_cochon_total = ($Obj_cochon->CompteCochon());
-
-    ?>
-    <?php echo "<br>Il y a ".$nb_cochon[0][0]." cochon(s) en vie. <br>"; ?>
-    <?php echo "Il y a ".$nb_cochonne[0][0]." cochonne(s) en vie.<br>"; ?>
-    <?php echo "Ce qui nous fait un total de ".$nb_cochon_total[0][0]." cochon(s) en vie.<br>"; ?>
-
-    <!-- <form action="" methode="post">
-    <?php  
-    //$Obj_cochon = new cochon("empty");
-    //$nb_cochon_total = ($Obj_cochon->CochonRandom());
-    ?>
-    <input type="submit" value="Créer un cochon aléatoire"></form> -->
+        </form>
+</div>
     
-    </div>
+
 
 <table class="table table-cochon">
     <tr>
