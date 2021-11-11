@@ -55,7 +55,7 @@ if(isset($_POST['gen_cochon'])){
   $Obj_cochon->Set('duree_de_vie', rand(600 , 604800));
 }
 
-  echo "<p class='note note-success'>Vous avez créé ".$_POST['nombre_cochon']." cochon(s)";
+  echo "<p class='note note-success message-creation'>Vous avez créé ".$_POST['nombre_cochon']." cochon"; if($_POST['nombre_cochon'] > 1 ) echo "s </p>";
     
 
 }
@@ -77,7 +77,7 @@ if(isset($_POST['reprod_cochon'])){
   $Obj_cochon->Set('id_mere', $_POST['mere']);
 }
 
-  echo "<p class='note note-success'>Vous avez donné naissance à ".$nb_bebe." cochonnet(s)";
+  echo "<p class='note note-success message-creation'>Vous avez donné naissance à ".$nb_bebe." cochonnet"; if($nb_bebe > 1) echo "s </p>";
     
 
 }
@@ -85,9 +85,29 @@ if(isset($_POST['reprod_cochon'])){
 
 ?>
 <h1>Liste des cochons</h1>
-<div class="container">
 
-    <div class="filtre">
+<?php
+
+$Obj_cochon = new cochon("empty");
+$nb_cochon = ($Obj_cochon->CompteCochonH());
+
+$Obj_cochon = new cochon("empty");
+$nb_cochonne = ($Obj_cochon->CompteCochonF());
+
+$Obj_cochon = new cochon("empty");
+$nb_cochon_total = ($Obj_cochon->CompteCochon());
+
+$Obj_cochon = new cochon("empty");
+$cochon = ($Obj_cochon->SelectAllM());
+
+$Obj_cochon = new cochon("empty");
+$cochonne = ($Obj_cochon->SelectAllF());
+
+?>
+
+
+
+<div class="gen-cochon">
 
         <form>
           Filtre :
@@ -109,37 +129,6 @@ if(isset($_POST['reprod_cochon'])){
             </select>
             <input class="btn btn-success bouton" type="submit" value="Appliquer le filtre">
         </form>
-        <div class="nbcochon">
-
-<?php
-
-$Obj_cochon = new cochon("empty");
-$nb_cochon = ($Obj_cochon->CompteCochonH());
-
-$Obj_cochon = new cochon("empty");
-$nb_cochonne = ($Obj_cochon->CompteCochonF());
-
-$Obj_cochon = new cochon("empty");
-$nb_cochon_total = ($Obj_cochon->CompteCochon());
-
-$Obj_cochon = new cochon("empty");
-$cochon = ($Obj_cochon->SelectAllM());
-
-$Obj_cochon = new cochon("empty");
-$cochonne = ($Obj_cochon->SelectAllF());
-
-?>
-<?php echo "<br>Il y a ".$nb_cochon[0][0]." cochon(s) en vie. <br>"; ?>
-<?php echo "Il y a ".$nb_cochonne[0][0]." cochonne(s) en vie.<br>"; ?>
-<?php echo "Ce qui nous fait un total de ".$nb_cochon_total[0][0]." cochon(s) en vie.<br>"; ?>
-
-
-</div>
-
-</div>
-<div class="gen-cochon">
-
-
 
         <form action="" method="POST"> <!--  Génération de cochons aléatoires -->
             Génération de cochon :
@@ -172,7 +161,11 @@ $cochonne = ($Obj_cochon->SelectAllF());
 
 <table class="table table-cochon">
     <tr>
-        <td></td>
+        <td>    
+            <?php echo $nb_cochon[0][0]." mâle";if($nb_cochon[0][0] > 1) echo "s";echo "<br>";?>
+            <?php echo $nb_cochonne[0][0]." femelle";if($nb_cochonne[0][0] > 1) echo "s";echo "<br>";?>
+            <?php echo $nb_cochon_total[0][0]." vivant";if($nb_cochon_total[0][0] > 1) echo "s";echo "<br>";?>
+        </td>
         <td>Nom</td>
         <td>Poids</td>
         <td>Taille</td>
@@ -185,8 +178,8 @@ $cochonne = ($Obj_cochon->SelectAllF());
     </tr>
     <?php
 
+
 foreach ($result_cochon as $ligne) {
-    
 ?>
     <tr class="ligne_<?php echo $ligne['id_cochon']; ?>">
         <td>
@@ -199,7 +192,7 @@ foreach ($result_cochon as $ligne) {
         <td><?php echo $ligne['taille'];?></td>
         <td><?php echo $ligne['sexe'];?></td>
         <td><?php echo $ligne['created_at'];?></td>
-        <td><?php echo $ligne['duree_de_vie'];?></td>
+        <td><?php echo strtotime($ligne['duree_de_vie'])-time();?></td>
         <td><?php echo $ligne['id_pere'];?></td>
         <td><?php echo $ligne['id_mere'];?></td>
         <td><?php echo $ligne['updated_at'];?></td>
@@ -210,16 +203,7 @@ foreach ($result_cochon as $ligne) {
     
 
 </table>
-<!-- <div class="pagination">
-        <?php
 
-        //for ($i = 1; $i <= ceil($nb_cochon_total[0][0]/5); $i++) {
-          //  $debut = 5*($i-1);
-        //echo "<a class='lien-pagination' href='index.php?page=liste_cochon&order=".$_GET['order']."&sort=".$_GET['sort']."&depart=".$debut."&nbaffichage=5'>".$i."</a>";  
-        //}
-                
-        ?>
-    </div> -->
 <script type="text/javascript">
 
     function deletebox(id, tbl) {
@@ -257,15 +241,16 @@ foreach ($result_cochon as $ligne) {
         list_cochon();
     });
 
-    // $(document).ready(function(){
-    //     list_cochon();
-    // });
-
-
     function list_cochon(){
         
     }   
-
+    var table = $('.table-cochon').DataTable( {
+    ajax: "data.json"
+    } );
+ 
+    setInterval( function () {
+        table.ajax.reload();
+    }, 1000 );
       
   
 </script>

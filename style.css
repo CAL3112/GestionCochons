@@ -68,6 +68,14 @@ tr:not(:first-child):hover{
     background-color: #cbcbcb;
 }
 
+tr:first-child td:first-child{
+    font-size: 0.8em;
+}
+
+tr:first-child{
+    align-items: center;
+}
+
 i.fas{
     margin: 0 10px;
 }
@@ -149,4 +157,10 @@ h1{
     margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
+}
+
+.message-creation{
+    position: absolute;
+    top: 2%;
+    left: 1%;
 }
