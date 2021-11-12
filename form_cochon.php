@@ -12,7 +12,7 @@ if(isset($_POST['sub_cochon'])){
 
 
 
-  echo "<p class='note note-success'>Vos informations ont été sauvegardées <br> <a href='index.php?page=liste_cochon'>Retour à la liste</a></p>";
+  echo "<p class='note note-success'>".$_POST['cochon_nom']." a bien été créé(e) <br> <a href='index.php?page=liste_cochon'>Retour à la liste</a></p>";
     exit();
 } else if ($_GET["id"] != "new" && $_GET["id"] > 0){
     $Obj_cochon = new cochon(intval($_GET["id"]));
@@ -41,7 +41,6 @@ if(isset($_POST['sub_cochon'])){
         <br>
         Sexe :
             <select name="cochon_sexe">
-                <!-- <option value="0">Non renseigné</option> -->
                <option value="Male">Male</option>
                <option value="Femelle">Femelle</option>
             </select>
@@ -52,22 +51,4 @@ if(isset($_POST['sub_cochon'])){
 
     </form>
 
-    <!-- <form method="POST" action="">
-
-        Nom :
-            <input type="text" name="cochon_nom" value="">
-        <br>
-        Poids :
-            <input type="number" name="cochon_poids" value="">
-        <br>
-        Taille :
-            <input type="number" name="cochon_taille" value="">
-        <br>
-        Sexe :
-            <input type="number" name="cochon_taille" value="">
-                    
-        <input type="hidden" name="cochon_id" value="<?php echo $_GET['id'] ?>">
-        <input type="submit" name="sub_cochon" value="Enregistrer" class="btn btn-success bouton">
-
-    </form> -->
 </div>

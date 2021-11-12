@@ -50,7 +50,10 @@ td{
     padding: 10px;
     border: 1px solid lightgrey;
 }
-
+th{
+    padding: 10px;
+    border: 1px solid lightgrey;
+}
 
 table{
     border-collapse: collapse;
@@ -58,18 +61,18 @@ table{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-tr:first-child{
+thead{
     font-weight: bold;
     background-color: #8dc0ee;
     font-size: 20px;
 }
 
-tr:not(:first-child):hover{
+tr:hover{
     background-color: #cbcbcb;
 }
 
-tr:first-child td:first-child{
-    font-size: 0.8em;
+tr:first-child th:first-child{
+    font-size: 0.7em;
 }
 
 tr:first-child{

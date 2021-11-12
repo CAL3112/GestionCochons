@@ -52,7 +52,7 @@ if(isset($_POST['gen_cochon'])){
   $Obj_cochon->Set('nom', $nomCochon);
   $Obj_cochon->Set('poids', rand(30 , 250));
   $Obj_cochon->Set('taille', rand(50 , 180));
-  $Obj_cochon->Set('duree_de_vie', rand(600 , 604800));
+  $Obj_cochon->Set('duree_de_vie', rand(60 , 86400));
 }
 
   echo "<p class='note note-success message-creation'>Vous avez créé ".$_POST['nombre_cochon']." cochon"; if($_POST['nombre_cochon'] > 1 ) echo "s </p>";
@@ -70,9 +70,9 @@ if(isset($_POST['reprod_cochon'])){
   if($sexe == 0){$valSexe = "Male";$nomCochon = $tblNomMasculin[rand(0,9)];} else {$valSexe = "Femelle";$nomCochon = $tblNomFeminin[rand(0,9)];};
   $Obj_cochon->Set('sexe', $valSexe);
   $Obj_cochon->Set('nom', $nomCochon);
-  $Obj_cochon->Set('poids', rand(30 , 160));
-  $Obj_cochon->Set('taille', rand(50 , 40));
-  $Obj_cochon->Set('duree_de_vie', rand(6000 , 604800));
+  $Obj_cochon->Set('poids', rand(20 , 160));
+  $Obj_cochon->Set('taille', rand(30 , 40));
+  $Obj_cochon->Set('duree_de_vie', rand(3600 , 86400));
   $Obj_cochon->Set('id_pere', $_POST['pere']);
   $Obj_cochon->Set('id_mere', $_POST['mere']);
 }
@@ -117,6 +117,7 @@ $cochonne = ($Obj_cochon->SelectAllF());
                 <option value="taille" <?php if (isset($_GET['order'])) if ($_GET['order'] == "taille") echo "selected";?> >Taille</option>
                 <option value="sexe" <?php if (isset($_GET['order'])) if ($_GET['order'] == "sexe") echo "selected";?> >Sexe</option>
                 <option value="created_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "created_at") echo "selected";?> >Date de création</option>
+                <option value="duree_de_vie" <?php if (isset($_GET['order'])) if ($_GET['order'] == "duree_de_vie") echo "selected";?> >Durée de vie</option>
                 <option value="id_pere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_pere") echo "selected";?> >Père</option>
                 <option value="id_mere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_mere") echo "selected";?> >Mère</option>
                 <option value="updated_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "updated_at") echo "selected";?> >Date de modification</option>
@@ -159,27 +160,33 @@ $cochonne = ($Obj_cochon->SelectAllF());
     
 
 
-<table class="table table-cochon">
+<table id="table_id" class="display table table-cochon">
+    <thead>
     <tr>
-        <td>    
+        <th>    
             <?php echo $nb_cochon[0][0]." mâle";if($nb_cochon[0][0] > 1) echo "s";echo "<br>";?>
             <?php echo $nb_cochonne[0][0]." femelle";if($nb_cochonne[0][0] > 1) echo "s";echo "<br>";?>
-            <?php echo $nb_cochon_total[0][0]." vivant";if($nb_cochon_total[0][0] > 1) echo "s";echo "<br>";?>
-        </td>
-        <td>Nom</td>
-        <td>Poids</td>
-        <td>Taille</td>
-        <td>Sexe</td>
-        <td>Date création</td>
-        <td>Durée de vie</td>
-        <td>Père</td>
-        <td>Mère</td>
-        <td>Date modification</td>
+            <?php echo " Total : ".$nb_cochon_total[0][0]."<br>";?>
+        </th>
+        <th>Nom</th>
+        <th>Poids</th>
+        <th>Taille</th>
+        <th>Sexe</th>
+        <th>Date création</th>
+        <th>Durée de vie</th>
+        <th>Père</th>
+        <th>Mère</th>
+        <th>Date modification</th>
     </tr>
+</thead>
+<tbody>
     <?php
 
 
 foreach ($result_cochon as $ligne) {
+
+    
+
 ?>
     <tr class="ligne_<?php echo $ligne['id_cochon']; ?>">
         <td>
@@ -192,17 +199,29 @@ foreach ($result_cochon as $ligne) {
         <td><?php echo $ligne['taille'];?></td>
         <td><?php echo $ligne['sexe'];?></td>
         <td><?php echo $ligne['created_at'];?></td>
-        <td><?php echo strtotime($ligne['duree_de_vie'])-time();?></td>
+        <td><?php echo strtotime($ligne['created_at'])+$ligne['duree_de_vie']-time();?></td>
         <td><?php echo $ligne['id_pere'];?></td>
         <td><?php echo $ligne['id_mere'];?></td>
         <td><?php echo $ligne['updated_at'];?></td>
     </tr>
 
-    <?php } ?>
+    <?php
+    
+    if(strtotime($ligne['created_at'])+$ligne['duree_de_vie']-time() <= 0 ) {
 
+
+        $conn = new BDD();
+        $conn->UPDATE('cochon', 'deleted_at', date('Y-m-d H:i:s'), $ligne['id_cochon']);
+    
+    
+    }
+    
+     } ?>
+</tbody>
     
 
 </table>
+
 
 <script type="text/javascript">
 
@@ -243,15 +262,9 @@ foreach ($result_cochon as $ligne) {
 
     function list_cochon(){
         
-    }   
-    var table = $('.table-cochon').DataTable( {
-    ajax: "data.json"
-    } );
- 
-    setInterval( function () {
-        table.ajax.reload();
-    }, 1000 );
-      
+    } 
+
+     
   
 </script>
 
