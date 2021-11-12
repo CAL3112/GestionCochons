@@ -12,30 +12,31 @@ if(isset($_GET['sort'])) {
     $sort = 'DESC';
 }
 
-if(isset($_GET['depart'])) {
-    $depart = $_GET['depart'];
+if(isset($_GET['decalage'])) {
+    $decalage = $_GET['decalage'];
 } else {
-    $depart = 0;
+    $decalage = 0;
 }
 
 if(isset($_GET['nbaffichage'])) {
-    $snbaffichageort = $_GET['nbaffichage'];
+    $nbaffichage = $_GET['nbaffichage'];
 } else {
     $nbaffichage = 5;
 }
-
-
-$Obj_cochon = new cochon("empty");
-$result_cochon = ($Obj_cochon->SelectAll($order, $sort));
-
-$Obj_cochon = new cochon("empty");
-$nb_cochon = ($Obj_cochon->CompteCochonH());
+if(isset($_GET['sexe'])) {
+    $sexe = $_GET['sexe'];
+} else {
+    $sexe = "%";
+}
 
 $Obj_cochon = new cochon("empty");
-$nb_cochonne = ($Obj_cochon->CompteCochonF());
-
+$result_cochon = ($Obj_cochon->SelectAll($sexe, $order, $sort, $decalage, $nbaffichage));
 $Obj_cochon = new cochon("empty");
-$nb_cochon_total = ($Obj_cochon->CompteCochon());
+$nb_cochon = ($Obj_cochon->CompteCochon("Male"));
+$Obj_cochon = new cochon("empty");
+$nb_cochonne = ($Obj_cochon->CompteCochon("Femelle"));
+$Obj_cochon = new cochon("empty");
+$nb_cochon_total = ($Obj_cochon->CompteCochon("%"));
 
 
 $tblNomMasculin = array("Francis", "Roger", "Paul", "Serkan", "Martial", "Lucas", "Mansour", "François", "Pierre", "Pascal");
@@ -89,19 +90,19 @@ if(isset($_POST['reprod_cochon'])){
 <?php
 
 $Obj_cochon = new cochon("empty");
-$nb_cochon = ($Obj_cochon->CompteCochonH());
+$nb_cochon = ($Obj_cochon->CompteCochon("Male"));
 
 $Obj_cochon = new cochon("empty");
-$nb_cochonne = ($Obj_cochon->CompteCochonF());
+$nb_cochonne = ($Obj_cochon->CompteCochon("Femelle"));
 
 $Obj_cochon = new cochon("empty");
-$nb_cochon_total = ($Obj_cochon->CompteCochon());
+$nb_cochon_total = ($Obj_cochon->CompteCochon("%"));
 
 $Obj_cochon = new cochon("empty");
-$cochon = ($Obj_cochon->SelectAllM());
+$cochon = ($Obj_cochon->SelectAll("Male", $order, $sort, $decalage, $nbaffichage));
 
 $Obj_cochon = new cochon("empty");
-$cochonne = ($Obj_cochon->SelectAllF());
+$cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffichage));
 
 ?>
 
@@ -110,25 +111,50 @@ $cochonne = ($Obj_cochon->SelectAllF());
 <div class="gen-cochon">
 
         <form>
-          Filtre :
-            <select  name="order">
-                <option value="nom" <?php if (isset($_GET['order'])) if ($_GET['order'] == "nom") echo "selected";?> >Nom</option>
-                <option value="poids" <?php if (isset($_GET['order'])) if ($_GET['order'] == "poids") echo "selected";?> >Poids</option>
-                <option value="taille" <?php if (isset($_GET['order'])) if ($_GET['order'] == "taille") echo "selected";?> >Taille</option>
-                <option value="sexe" <?php if (isset($_GET['order'])) if ($_GET['order'] == "sexe") echo "selected";?> >Sexe</option>
-                <option value="created_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "created_at") echo "selected";?> >Date de création</option>
-                <option value="duree_de_vie" <?php if (isset($_GET['order'])) if ($_GET['order'] == "duree_de_vie") echo "selected";?> >Durée de vie</option>
-                <option value="id_pere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_pere") echo "selected";?> >Père</option>
-                <option value="id_mere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_mere") echo "selected";?> >Mère</option>
-                <option value="updated_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "updated_at") echo "selected";?> >Date de modification</option>
+            <div class="ligne">
+            <div class="mr">Tri : </div>
+                <select  name="order">
+                    <option value="nom" <?php if (isset($_GET['order'])) if ($_GET['order'] == "nom") echo "selected";?> >Nom</option>
+                    <option value="poids" <?php if (isset($_GET['order'])) if ($_GET['order'] == "poids") echo "selected";?> >Poids</option>
+                    <option value="taille" <?php if (isset($_GET['order'])) if ($_GET['order'] == "taille") echo "selected";?> >Taille</option>
+                    <option value="sexe" <?php if (isset($_GET['order'])) if ($_GET['order'] == "sexe") echo "selected";?> >Sexe</option>
+                    <option value="created_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "created_at") echo "selected";?> >Date de création</option>
+                    <option value="duree_de_vie" <?php if (isset($_GET['order'])) if ($_GET['order'] == "duree_de_vie") echo "selected";?> >Durée de vie</option>
+                    <option value="id_pere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_pere") echo "selected";?> >Père</option>
+                    <option value="id_mere" <?php if (isset($_GET['order'])) if ($_GET['order'] == "id_mere") echo "selected";?> >Mère</option>
+                    <option value="updated_at" <?php if (isset($_GET['order'])) if ($_GET['order'] == "updated_at") echo "selected";?> >Date de modification</option>
 
-            </select>
-            Ordre :
-            <select name="sort">
-                <option value="ASC" <?php if (isset($_GET['sort'])) if ($_GET['sort'] == "ASC") echo "selected";?>>Croissant</option>
-                <option value="DESC" <?php if (isset($_GET['sort'])) if ($_GET['sort'] == "DESC") echo "selected";?>>Décroissant</option>
-            </select>
-            <input class="btn btn-success bouton" type="submit" value="Appliquer le filtre">
+                </select>
+            </div>
+            <div class="ligne">
+            <div>Ordre :</div>
+                <select name="sort">
+                    <option value="ASC" <?php if (isset($_GET['sort'])) if ($_GET['sort'] == "ASC") echo "selected";?>>Croissant</option>
+                    <option value="DESC" <?php if (isset($_GET['sort'])) if ($_GET['sort'] == "DESC") echo "selected";?>>Décroissant</option>
+                </select>
+            </div>
+            <div class="ligne">
+            <div>Filtre :</div>
+        <select name="sexe">
+            <option value="%">Tout</option>
+            <option value="Male" <?php if (isset($_GET['sexe'])) if ($_GET['sexe'] == "Male") echo "selected";?>>Mâle</option>
+            <option value="Femelle" <?php if (isset($_GET['sexe'])) if ($_GET['sexe'] == "Femelle") echo "selected";?>>Femelle</option>
+        </select>
+    </div>
+    <div class="ligne">
+           <div>Nombre :</div>
+           <div>
+               <select name="nbaffichage">
+                    <option value="5" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 5) echo "selected";?>>5</option>
+                    <option value="15" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 15) echo "selected";?>>15</option>
+                    <option value="25" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 25) echo "selected";?>>25</option>
+                    <option value="50" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 50) echo "selected";?>>50</option>
+                    <option value="75" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 75) echo "selected";?>>75</option>
+                    <option value="100" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 100) echo "selected";?>>100</option>
+                </select>
+            </div>             
+    </div>
+            <input class="btn btn-success bouton" type="submit" value="Appliquer">
         </form>
 
         <form action="" method="POST"> <!--  Génération de cochons aléatoires -->
@@ -140,25 +166,35 @@ $cochonne = ($Obj_cochon->SelectAllF());
 
         <form action="" method="POST"> <!--  Reproduction de cochons aléatoires -->
             Reproduction de cochon : <br>
-            Père :
-            <select name="pere">
-                <option value="0">Non renseigné</option>
-               <?php foreach ($cochon as $male){
-                echo  "<option value='".$male['id_cochon']."'"; echo ">".$male['nom']."</option>"; } ?>
-            </select>
-            Mère :
-            <select name="mere">
-                <option value="0">Non renseigné</option>
-               <?php foreach ($cochonne as $femelle){
-                echo  "<option value='".$femelle['id_cochon']."'"; echo ">".$femelle['nom']."</option>"; } ?>
-            </select>
-
+            <div>
+                Père :
+                <select name="pere">
+                    <option value="0">Non renseigné</option>
+                <?php foreach ($cochon as $male){
+                    echo  "<option value='".$male['id_cochon']."'"; echo ">".$male['nom']."</option>"; } ?>
+                </select>
+            </div>
+            <div>
+                Mère :
+                <select name="mere">
+                    <option value="0">Non renseigné</option>
+                <?php foreach ($cochonne as $femelle){
+                    echo  "<option value='".$femelle['id_cochon']."'"; echo ">".$femelle['nom']."</option>"; } ?>
+                </select>
+            </div>
             <input class="btn btn-success bouton" name="reprod_cochon" type="submit" value="Reproduire">
 
         </form>
 </div>
     
-
+<div>
+    <?php if($nb_cochon_total[0][0] > $nbaffichage) //pagination
+            for($i=1; $i < ($nb_cochon_total[0][0] / $nbaffichage)+1; $i++){ 
+                echo "<a href='index.php?order=".$_GET['order']."&sort=".$_GET['sort']."&sexe=".$_GET['sexe']."&nbaffichage=".$_GET['nbaffichage']."&decalage=".($i-1)*$nbaffichage."' class='lien-pagination'>".$i."<a>";
+            }
+    ?>
+</div>
+</form>
 
 <table id="table_id" class="display table table-cochon">
     <thead>

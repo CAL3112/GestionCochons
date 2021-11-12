@@ -4,8 +4,6 @@ class cochon{
 
     var $id;
     var $tbl = "cochon";
-    var $nbaffichage = 50;
-    var  $depart = 0;
 
     function __construct($monid)
     {
@@ -28,39 +26,15 @@ class cochon{
         return $result[0][0];
     }
 
-    function SelectAll($order = "created_at", $sort = "DESC"){//
+    function SelectAll($sexe = "%", $order = "created_at", $sort = "DESC", $depart, $nbaffichage){
         $conn  =  new BDD();
-        $req = "SELECT * FROM ".$this->tbl." WHERE deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00'   ORDER BY `".$order."` ".$sort." LIMIT ".$this->depart.", ".$this->nbaffichage."";  
+        $req = "SELECT * FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe` LIKE '".$sexe."' ORDER BY `".$order."` ".$sort." LIMIT ".$depart.", ".$nbaffichage."";  
         return $res = $conn->query($req);
     }
 
-    function SelectAllM($order = "created_at", $sort = "DESC"){//
+    function CompteCochon($sexe){
         $conn  =  new BDD();
-        $req = "SELECT * FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe`='Male' ORDER BY `".$order."` ".$sort." LIMIT ".$this->depart.", ".$this->nbaffichage."";  
-        return $res = $conn->query($req);
-    }
-
-    function SelectAllF($order = "created_at", $sort = "DESC"){//
-        $conn  =  new BDD();
-        $req = "SELECT * FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe`='Femelle' ORDER BY `".$order."` ".$sort." LIMIT ".$this->depart.", ".$this->nbaffichage."";  
-        return $res = $conn->query($req);
-    }
-
-    function CompteCochonH(){
-        $conn  =  new BDD();
-        $req = "SELECT COUNT(*) FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe`='Male' ";
-        return $res = $conn->query($req);
-    }
-
-    function CompteCochonF(){
-        $conn  =  new BDD();
-        $req = "SELECT COUNT(*) FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe`='Femelle' ";
-        return $res = $conn->query($req);
-    }
-
-    function CompteCochon(){
-        $conn  =  new BDD();
-        $req = "SELECT COUNT(*) FROM ".$this->tbl." WHERE deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00'";
+        $req = "SELECT COUNT(*) FROM ".$this->tbl." WHERE (deleted_at IS NULL OR deleted_at = '000-00-00 00:00:00') AND `sexe` LIKE '".$sexe."' ";
         return $res = $conn->query($req);
     }
 
