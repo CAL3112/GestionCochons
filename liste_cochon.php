@@ -190,7 +190,39 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
 <div>
     <?php if($nb_cochon_total[0][0] > $nbaffichage) //pagination
             for($i=1; $i < ($nb_cochon_total[0][0] / $nbaffichage)+1; $i++){ 
-                echo "<a href='index.php?order=".$_GET['order']."&sort=".$_GET['sort']."&sexe=".$_GET['sexe']."&nbaffichage=".$_GET['nbaffichage']."&decalage=".($i-1)*$nbaffichage."' class='lien-pagination'>".$i."<a>";
+                echo "<a href='index.php?order=";
+                if(isset($_GET['order'])){
+                    echo $_GET['order'];
+                } else {
+                    echo "created_at";};
+
+                    echo "&sort=";
+
+                if(isset($_GET['sort'])){
+                    echo $_GET['sort'];
+                } else {
+                    echo "DESC";};
+
+                    echo "&sexe=";
+
+                if(isset($_GET['sexe'])){
+                    echo $_GET['sexe'];
+                } else {
+                    echo "%";};
+
+                    echo "&nbaffichage=";
+
+                if(isset($_GET['nbaffichage'])){
+                echo $_GET['nbaffichage'];
+                echo "&decalage=";
+                } else { 
+                    echo "5";};
+
+                    echo "&decalage=";
+               
+                    echo ($i-1)*$nbaffichage;
+
+                    echo "' class='lien-pagination'>".$i."<a>";
             }
     ?>
 </div>
