@@ -187,8 +187,12 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
         </form>
 </div>
     
-<div class="div-pagination">
-    <?php if($nb_cochon_total[0][0] > $nbaffichage) //pagination
+<div class="div-pagination"> <!-- pagination -->
+    <?php 
+    
+    if($_GET['sexe'] == "%") {    
+    
+    if($nb_cochon_total[0][0] > $nbaffichage) 
             for($i=1; $i < ($nb_cochon_total[0][0] / $nbaffichage)+1; $i++){ 
                 echo "<a href='index.php?order=";
                 if(isset($_GET['order'])){
@@ -225,7 +229,87 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
                     if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
                     echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
             }
+};
+if($_GET['sexe'] == "Male") {    
+    
+    if($nb_cochon[0][0] > $nbaffichage) 
+            for($i=1; $i < ($nb_cochon[0][0] / $nbaffichage)+1; $i++){ 
+                echo "<a href='index.php?order=";
+                if(isset($_GET['order'])){
+                    echo $_GET['order'];
+                } else {
+                    echo "created_at";};
 
+                    echo "&sort=";
+
+                if(isset($_GET['sort'])){
+                    echo $_GET['sort'];
+                } else {
+                    echo "DESC";};
+
+                    echo "&sexe=";
+
+                if(isset($_GET['sexe'])){
+                    echo $_GET['sexe'];
+                } else {
+                    echo "%";};
+
+                    echo "&nbaffichage=";
+
+                if(isset($_GET['nbaffichage'])){
+                echo $_GET['nbaffichage'];
+                } else { 
+                    echo "5";};
+
+                    echo "&decalage=";
+               
+                    echo ($i-1)*$nbaffichage;
+
+                    echo "' class='lien-pagination";
+                    if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
+                    echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
+            }
+};
+if($_GET['sexe'] == "Femelle") {    
+    
+    if($nb_cochonne[0][0] > $nbaffichage) 
+            for($i=1; $i < ($nb_cochonne[0][0] / $nbaffichage)+1; $i++){ 
+                echo "<a href='index.php?order=";
+                if(isset($_GET['order'])){
+                    echo $_GET['order'];
+                } else {
+                    echo "created_at";};
+
+                    echo "&sort=";
+
+                if(isset($_GET['sort'])){
+                    echo $_GET['sort'];
+                } else {
+                    echo "DESC";};
+
+                    echo "&sexe=";
+
+                if(isset($_GET['sexe'])){
+                    echo $_GET['sexe'];
+                } else {
+                    echo "%";};
+
+                    echo "&nbaffichage=";
+
+                if(isset($_GET['nbaffichage'])){
+                echo $_GET['nbaffichage'];
+                } else { 
+                    echo "5";};
+
+                    echo "&decalage=";
+               
+                    echo ($i-1)*$nbaffichage;
+
+                    echo "' class='lien-pagination";
+                    if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
+                    echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
+            }
+};
     ?>
 </div>
 </form>
