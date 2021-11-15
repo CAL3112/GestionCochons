@@ -171,3 +171,13 @@ h1{
 .mr{
     margin-right: 10px;
 }
+
+.span-lien-pagination{
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.div-pagination .span-lien-pagination:last-child{
+    display: none;
+}
+

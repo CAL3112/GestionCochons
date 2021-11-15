@@ -142,7 +142,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
         </select>
     </div>
     <div class="ligne">
-           <div>Nombre :</div>
+           <div>Nombre affiché :</div>
            <div>
                <select name="nbaffichage">
                     <option value="5" <?php if (isset($_GET['nbaffichage'])) if ($_GET['nbaffichage'] == 5) echo "selected";?>>5</option>
@@ -171,7 +171,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
                 <select name="pere">
                     <option value="0">Non renseigné</option>
                 <?php foreach ($cochon as $male){
-                    echo  "<option value='".$male['id_cochon']."'"; echo ">".$male['nom']."</option>"; } ?>
+                    echo  "<option value='".$male['id_cochon']."'"; echo ">N° ".$male['id_cochon']." | ".$male['nom']."</option>"; } ?>
                 </select>
             </div>
             <div>
@@ -179,7 +179,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
                 <select name="mere">
                     <option value="0">Non renseigné</option>
                 <?php foreach ($cochonne as $femelle){
-                    echo  "<option value='".$femelle['id_cochon']."'"; echo ">".$femelle['nom']."</option>"; } ?>
+                    echo  "<option value='".$femelle['id_cochon']."'"; echo ">N° ".$femelle['id_cochon']." | ".$femelle['nom']."</option>";}?>
                 </select>
             </div>
             <input class="btn btn-success bouton" name="reprod_cochon" type="submit" value="Reproduire">
@@ -187,7 +187,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
         </form>
 </div>
     
-<div>
+<div class="div-pagination">
     <?php if($nb_cochon_total[0][0] > $nbaffichage) //pagination
             for($i=1; $i < ($nb_cochon_total[0][0] / $nbaffichage)+1; $i++){ 
                 echo "<a href='index.php?order=";
@@ -214,7 +214,6 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
 
                 if(isset($_GET['nbaffichage'])){
                 echo $_GET['nbaffichage'];
-                echo "&decalage=";
                 } else { 
                     echo "5";};
 
@@ -222,8 +221,11 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
                
                     echo ($i-1)*$nbaffichage;
 
-                    echo "' class='lien-pagination'>".$i."<a>";
+                    echo "' class='lien-pagination";
+                    if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
+                    echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
             }
+
     ?>
 </div>
 </form>
