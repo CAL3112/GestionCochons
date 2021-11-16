@@ -27,6 +27,7 @@ if(isset($_GET['sexe'])) {
     $sexe = $_GET['sexe'];
 } else {
     $sexe = "%";
+    $_GET['sexe']="%";
 }
 
 $Obj_cochon = new cochon("empty");
