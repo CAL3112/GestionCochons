@@ -4,8 +4,8 @@
 class BDD {
 
     var $host = "localhost";
-    var $user = "root";
-    var $pasw = "";
+    var $user = "lucas"; //"root"
+    var $pasw = "lucas2021*"; //""
     var $dbname = "cochon";
 
     var $db = "";
