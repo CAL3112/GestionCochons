@@ -160,7 +160,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
 
         <form action="" method="POST"> <!--  Génération de cochons aléatoires -->
             Génération de cochon :
-            <input type="number" maxlength="2" name="nombre_cochon" value="">
+            <input type="number" min="1" max="50" name="nombre_cochon" value="">
             <input class="btn btn-success bouton" name="gen_cochon" type="submit" value="Générer">
 
         </form>
@@ -226,9 +226,9 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
                
                     echo ($i-1)*$nbaffichage;
 
-                    echo "' class='lien-pagination";
-                    if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
-                    echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
+                    echo "' class='lien-pagination'>";
+                    // if($_POST['decalage'] == $_POST['nbaffichage']/($i-1)) echo " actif";
+                    // echo "'>".$i."</a><span class='span-lien-pagination'>|</span>";
             }
 };
 if($_GET['sexe'] == "Male") {    
