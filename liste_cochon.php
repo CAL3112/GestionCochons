@@ -160,7 +160,7 @@ $cochonne = ($Obj_cochon->SelectAll("Femelle", $order, $sort, $decalage, $nbaffi
 
         <form action="" method="POST"> <!--  Génération de cochons aléatoires -->
             Génération de cochon :
-            <input type="number" name="nombre_cochon" value="">
+            <input type="number" maxlength="2" name="nombre_cochon" value="">
             <input class="btn btn-success bouton" name="gen_cochon" type="submit" value="Générer">
 
         </form>
